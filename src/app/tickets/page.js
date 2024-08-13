@@ -32,21 +32,9 @@ export default function TicketsPage() {
       </div>
 
       <div>
-        <Link href="/">
+        <Link href="/addtickets">
           <button className="btn-primary">New Tickets</button>
         </Link>
-      </div>
-
-      <div className="flex flex-col space-y-2">
-        {products.map((product) => (
-          <Link
-            key={product.id}
-            href={`/tickets/${product.id}`}
-            className="text-blue-500 hover:underline"
-          >
-            {product.title}
-          </Link>
-        ))}
       </div>
     </div>
   );
