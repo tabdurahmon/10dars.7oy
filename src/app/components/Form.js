@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { TiDeleteOutline } from "react-icons/ti";
 
 function Form() {
-  const [books, setBooks] = useState([]);
+  const [products, setproducts] = useState([]);
 
   // Ma'lumotlarni olish
   useEffect(() => {
@@ -17,7 +17,7 @@ function Form() {
       .then((data) => {
         console.log("Fetched data:", data);
         if (Array.isArray(data)) {
-          setBooks(data);
+          setproducts(data);
         }
       })
       .catch((error) => {
@@ -25,7 +25,6 @@ function Form() {
       });
   }, []);
 
-  // Ma'lumot qo'shish
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
@@ -45,9 +44,9 @@ function Form() {
         }
         return response.json();
       })
-      .then((newBook) => {
-        console.log("New book added:", newBook);
-        setBooks([...books, newBook]);
+      .then((newproduct) => {
+        console.log("New product added:", newproduct);
+        setproducts([...products, newproduct]);
         e.target.reset();
       })
       .catch((error) => {
@@ -55,7 +54,6 @@ function Form() {
       });
   };
 
-  // Ma'lumotni o'chirish
   const handleDelete = (id) => {
     fetch(`http://localhost:4000/tickets/${id}`, {
       method: "DELETE",
@@ -64,7 +62,7 @@ function Form() {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        setBooks(books.filter((book) => book.id !== id));
+        setproducts(products.filter((product) => product.id !== id));
       })
       .catch((error) => {
         console.error("Delete error:", error);
@@ -79,7 +77,7 @@ function Form() {
           onSubmit={handleSubmit}
         >
           <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-            Add New Book
+            Add New Tickets
           </h2>
           <div className="flex flex-col gap-4 mb-4">
             <div>
@@ -91,19 +89,19 @@ function Form() {
                 id="title"
                 name="title"
                 className="border rounded-md w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter book title"
+                placeholder="Enter ticket title"
               />
             </div>
             <div>
               <label htmlFor="author" className="block text-gray-700 mb-1">
-                Author:
+                description:
               </label>
               <input
                 type="text"
-                id="author"
-                name="author"
+                id="description"
+                name="description"
                 className="border rounded-md w-full px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter author's name"
+                placeholder="Enter descriptions"
               />
             </div>
           </div>
@@ -117,21 +115,21 @@ function Form() {
 
         <div className="bg-white shadow-md rounded-lg p-8">
           <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">
-            Books List
+            Tickets List
           </h2>
           <ul>
-            {books.length > 0 ? (
-              books.map((book) => (
+            {products.length > 0 ? (
+              products.map((product) => (
                 <li
-                  key={book.id}
+                  key={product.id}
                   className="flex justify-between items-center mb-4"
                 >
                   <div>
-                    <h3 className="text-lg font-semibold">{book.title}</h3>
-                    <p className="text-gray-600">{book.author}</p>
+                    <h3 className="text-lg font-semibold">{product.title}</h3>
+                    <p className="text-gray-600">{product.author}</p>
                   </div>
                   <button
-                    onClick={() => handleDelete(book.id)}
+                    onClick={() => handleDelete(product.id)}
                     className="text-red-500 hover:text-red-700"
                   >
                     <TiDeleteOutline size={24} />
@@ -139,7 +137,9 @@ function Form() {
                 </li>
               ))
             ) : (
-              <p className="text-center text-gray-600">No books available.</p>
+              <p className="text-center text-gray-600">
+                No products available.
+              </p>
             )}
           </ul>
         </div>
